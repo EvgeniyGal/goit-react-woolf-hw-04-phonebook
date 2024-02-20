@@ -1,13 +1,4 @@
-export default function Input({
-  name,
-  label,
-  pattern,
-  title,
-  required,
-  type,
-  value,
-  onChange,
-}) {
+export default function Input({ name, label, onChange, ...props }) {
   function handleOnChange(event) {
     const currValue = event.target.value.trim();
     const currName = event.target.name.trim();
@@ -23,14 +14,10 @@ export default function Input({
       <input
         className=" text-xl text-stone-700
                    p-3 rounded-lg outline-stone-500 bg-stone-50"
-        type={type}
         id={name}
         name={name}
-        value={value}
         onChange={handleOnChange}
-        pattern={pattern}
-        title={title}
-        required={required}
+        {...props}
       />
     </p>
   );
