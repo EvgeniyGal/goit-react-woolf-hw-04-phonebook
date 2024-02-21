@@ -5,15 +5,17 @@ import Filter from './Filter';
 import { useEffect, useState } from 'react';
 
 export function App() {
-  const [contactsState, setContactsState] = useState([]);
+  const [contactsState, setContactsState] = useState(loadStoredData);
   const [filterState, setFilterState] = useState('');
 
-  useEffect(() => {
+  function loadStoredData() {
     const localData = JSON.parse(localStorage.getItem('phoneBook'));
-    if (localData) {
-      setContactsState(localData);
-    }
-  }, []);
+    return localData ? localData : [];
+  }
+
+  useEffect(() => {
+    localStorage.setItem('phoneBook', JSON.stringify(contactsState));
+  }, [contactsState]);
 
   function handleAddPhone(newPhone) {
     if (
@@ -26,8 +28,6 @@ export function App() {
     }
 
     setContactsState(prevState => [...prevState, { ...newPhone, id: uuid() }]);
-
-    localStorage.setItem('phoneBook', JSON.stringify(contactsState));
   }
 
   function handleDeletePhone(id) {

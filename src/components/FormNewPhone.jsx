@@ -1,29 +1,32 @@
 import Input from './Input';
 import { useState } from 'react';
 
-const INITIAL_STATE = {
-  name: '',
-  phone: '',
-};
-
 export default function FormNewPhone({ onAddPhone }) {
-  const [formState, setFormState] = useState(INITIAL_STATE);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
 
   function handleSubmit(event) {
     event.preventDefault();
 
     onAddPhone({
-      name: formState.name,
-      phone: formState.phone,
+      name,
+      phone,
     });
 
-    setFormState({
-      ...INITIAL_STATE,
-    });
+    setName('');
+    setPhone('');
   }
 
   function handleInputChange(field, value) {
-    setFormState(prevState => ({ ...prevState, [field]: value }));
+    switch (field) {
+      case 'name':
+        setName(value);
+        break;
+      case 'phone':
+        setPhone(value);
+        break;
+      default:
+    }
   }
 
   return (
@@ -36,20 +39,20 @@ export default function FormNewPhone({ onAddPhone }) {
         name="name"
         label="Name"
         onChange={handleInputChange}
-        value={formState.name}
+        value={name}
         pattern="^[a-zA-Zа-яА-Я]+((\[' -\]\\\[a-zA-Zа-яА-Я \])?\[a-zA-Zа-яА-Я\]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-        required={true}
+        required
       />
       <Input
         type="tel"
         name="phone"
         label="Phone"
         onChange={handleInputChange}
-        value={formState.phone}
+        value={phone}
         pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-        required={true}
+        required
       />
       <button
         type="submit"
